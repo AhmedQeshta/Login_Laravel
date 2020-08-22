@@ -20,3 +20,9 @@ Route::get('/', function () {
 Auth::routes(['verify' => true]);
 
 Route::get('/home', 'HomeController@index')->name('home');
+
+Route::group(['prefix' => 'offers'],function (){
+    Route::get('/create', 'CrudController@create')->name('offers.create');
+    Route::post('/store', 'CrudController@store')->name('offers.store');
+});
+
