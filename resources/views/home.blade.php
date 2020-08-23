@@ -15,6 +15,8 @@
                     @endif
 
                     {{ __('You are logged in!') }}
+
+                        <img src="{{Auth::user()->phone }}" alt="">
                 </div>
             </div>
         </div>

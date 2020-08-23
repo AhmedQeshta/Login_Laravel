@@ -13,17 +13,20 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::get('/', function () {
-    return view('welcome');
-});
 
-Auth::routes(['verify' => true]);
 
-Route::get('/home', 'HomeController@index')->name('home');
 Route::group(['prefix' => LaravelLocalization::setLocale(), 'middleware' => [ 'localeSessionRedirect', 'localizationRedirect', 'localeViewPath' ]], function() {
+    Auth::routes(['verify' => true]);
+    Route::get('/', function () {
+        return view('welcome');
+    });
+    Route::get('/home', 'HomeController@index')->name('home');
     Route::group(['prefix' => 'offers'],function (){
         Route::get('/create', 'CrudController@create')->name('offers.create');
         Route::post('/store', 'CrudController@store')->name('offers.store');
     });
+    Route::get('/redirect', 'SocialAuthFacebookController@redirect');
+    Route::get('/callback', 'SocialAuthFacebookController@callback');
 });
+
 
