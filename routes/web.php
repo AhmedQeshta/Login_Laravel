@@ -22,6 +22,7 @@ Route::group(['prefix' => LaravelLocalization::setLocale(), 'middleware' => [ 'l
     });
     Route::get('/home', 'HomeController@index')->name('home');
     Route::group(['prefix' => 'offers'],function (){
+        Route::get('/', 'CrudController@index')->name('offers.index');
         Route::get('/create', 'CrudController@create')->name('offers.create');
         Route::post('/store', 'CrudController@store')->name('offers.store');
     });

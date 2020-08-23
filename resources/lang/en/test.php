@@ -14,5 +14,14 @@ return [
     */
 
     'offers' => 'test offers ',
+    'offerNameUniq' => 'The name has already been taken',
+
+    'OfferName'=>'Offer Name',
+    'offerPrice' => 'offer Price',
+    'image' => 'image' ,
+    'Empty_Table' => 'table is empty',
+    'NameAR' =>'Name Arabic ',
+    'NameEN' => 'Name English',
+
 
 ];

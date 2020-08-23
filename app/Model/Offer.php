@@ -16,6 +16,6 @@ class Offer extends Model
 
 
     protected $fillable = [
-        'name', 'price','photo'
+        'name_ar','name_en', 'price','photo'
     ];
 }

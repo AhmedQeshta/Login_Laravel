@@ -2,9 +2,11 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\offerRequest;
 use App\Model\Offer;
 use Illuminate\Http\Request;
 use File;
+use Mcamara\LaravelLocalization\Facades\LaravelLocalization;
 
 class CrudController extends Controller
 {
@@ -13,9 +15,10 @@ class CrudController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
-    {
-        //
+    public function index(){
+        $offers = Offer::select('id','name_'.LaravelLocalization::getCurrentLocale(). ' as name','price','photo');
+        $offers = $offers->latest()->paginate(2);
+        return view('offers.all',compact('offers'))->with('i', (request()->input('page', 1) - 1) * 2);
     }
 
     /**
@@ -25,7 +28,7 @@ class CrudController extends Controller
      */
     public function create()
     {
-        return view('offers.offer');
+        return view('offers.create');
     }
 
     /**
@@ -34,10 +37,12 @@ class CrudController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\RedirectResponse
      */
-    public function store(Request $request)
+//    use offerRequest from request file
+    public function store(offerRequest $request)
     {
         // Validation
-        $request->validate($this->rules());
+       //  use from class offerRequest
+        $request->validate($request->rules(),$request->messages());
 
         // save data in DB
         // to img store
@@ -47,6 +52,8 @@ class CrudController extends Controller
         }
 
         $request['photo'] = $imagePath ;
+        $request['name_ar'] = $request->name_ar;
+        $request['name_en'] = $request->name_en ;
         Offer::create($request->all());
 
 
@@ -99,18 +106,5 @@ class CrudController extends Controller
         //
     }
 
-    private function rules($id= null){
-        $rules = [];
-        if($id){
-            $rules['name'] = 'required|min:3|max:50|unique:offers,name,' . $id ;
-            $rules['price'] = 'required|min:1|max:6';
-            $rules['offer_image'] = 'mimes:png,jpg,jpeg' ;
-        }else {
-            $rules['name'] = 'required|min:3|max:50|unique:offers,name' ;
-            $rules['price'] = 'required|min:1|max:6|' ;
-            $rules['offer_image'] = 'required|mimes:png,jpg,jpeg' ;
-        }
 
-        return $rules;
-    }
 }

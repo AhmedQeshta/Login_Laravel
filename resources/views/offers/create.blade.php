@@ -34,13 +34,23 @@
                                 </div>
 
                                 <div class="form-group">
-                                    <label for="name">name</label>
-                                    <input type="text" required class="form-control @error('name') is-invalid @enderror" name="name" value="{{ old('name') }}"  >
-                                        @error('name')
+                                    <label for="name_ar">{{__('test.NameAR')}}</label>
+                                    <input type="text" required class="form-control @error('name_ar') is-invalid @enderror" name="name_ar" value="{{ old('name_ar') }}"  >
+                                        @error('name_ar')
                                             <span class="invalid-feedback alert-danger" role="alert">
                                                 <strong>{{ $message }}</strong>
                                             </span>
                                         @enderror
+                                </div>
+
+                                <div class="form-group">
+                                    <label for="name_en">{{__('test.NameEN')}}</label>
+                                    <input type="text" required class="form-control @error('name_en') is-invalid @enderror" name="name_en" value="{{ old('name_en') }}"  >
+                                    @error('name_en')
+                                    <span class="invalid-feedback alert-danger" role="alert">
+                                                <strong>{{ $message }}</strong>
+                                            </span>
+                                    @enderror
                                 </div>
 
                                 <div class="form-group">
