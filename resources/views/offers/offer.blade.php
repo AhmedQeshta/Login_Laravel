@@ -1,11 +1,15 @@
 @extends('layouts.app')
 
+
+
 @section('content')
+
+
     <div class="container">
         <div class="row justify-content-center">
             <div class="col-md-8">
                 <div class="card">
-                    <div class="card-header">{{ __('offers') }}</div>
+                    <div class="card-header">{{ __('test.offers') }}</div>
                     <div class="col clo-md-12">
                         @if (session('error'))
                             <div class="alert alert-danger" role="alert">

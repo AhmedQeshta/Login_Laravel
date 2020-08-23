@@ -7,7 +7,7 @@
     <!-- CSRF Token -->
     <meta name="csrf-token" content="{{ csrf_token() }}">
 
-    <title>{{ config('app.name', 'Laravel') }}</title>
+    <title>{{ config('app.name', 'Starter') }}</title>
 
     <!-- Scripts -->
     <script src="{{ asset('js/app.js') }}" defer></script>
@@ -18,14 +18,50 @@
 
     <!-- Styles -->
     <link href="{{ asset('css/app.css') }}" rel="stylesheet">
+{{--    style--}}
+    @if( LaravelLocalization::getCurrentLocaleDirection() == 'ltr')
+        <style>
+            .card-header{
+                display: flex;
+                text-align: start;
+                color: #2a9055;
+            }
+            .card{
+
+                direction: ltr;
+
+            }
+        </style>
+    @elseif(  LaravelLocalization::getCurrentLocaleDirection() == 'rtl')
+        <style>
+            .card{
+                direction: rtl;
+            }
+            .card-header{
+                display: flex;
+                text-align: left;
+                color: #b36536;
+            }
+        </style>
+    @endif
+
 </head>
 <body>
     <div id="app">
         <nav class="navbar navbar-expand-md navbar-light bg-white shadow-sm">
             <div class="container">
                 <a class="navbar-brand" href="{{ url('/') }}">
-                    {{ config('app.name', 'Laravel') }}
+                    {{ config('app.name', 'Starter') }}
                 </a>
+                    <ul class="navbar-nav ml-auto">
+                        @foreach(LaravelLocalization::getSupportedLocales() as $localeCode => $properties)
+                            <li class="nav-item dropdown px-1">
+                                <a rel="alternate" hreflang="{{ $localeCode }}" href="{{ LaravelLocalization::getLocalizedURL($localeCode, null, [], true) }}">
+                                    {{ $properties['native'] }}
+                                </a>
+                            </li>
+                        @endforeach
+                    </ul>
                 <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="{{ __('Toggle navigation') }}">
                     <span class="navbar-toggler-icon"></span>
                 </button>
