@@ -23,8 +23,11 @@ Route::group(['prefix' => LaravelLocalization::setLocale(), 'middleware' => [ 'l
     Route::get('/home', 'HomeController@index')->name('home');
     Route::group(['prefix' => 'offers'],function (){
         Route::get('/', 'CrudController@index')->name('offers.index');
-        Route::get('/create', 'CrudController@create')->name('offers.create');
-        Route::post('/store', 'CrudController@store')->name('offers.store');
+        Route::get('create', 'CrudController@create')->name('offers.create');
+        Route::post('store', 'CrudController@store')->name('offers.store');
+        Route::get('edit/{id}', 'CrudController@edit')->name('offers.edit');
+        Route::put('update/{id}', 'CrudController@update')->name('offers.update');
+        Route::get('destroy/{id?}', 'CrudController@destroy')->name('offers.destroy');
     });
     Route::get('/redirect', 'SocialAuthFacebookController@redirect');
     Route::get('/callback', 'SocialAuthFacebookController@callback');

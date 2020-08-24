@@ -22,6 +22,12 @@ return [
     'Empty_Table' => 'table is empty',
     'NameAR' =>'Name Arabic ',
     'NameEN' => 'Name English',
+    'operation' => 'Operations',
+
+    'message'=>[
+        'edit' => 'Edit',
+        'delete' => 'Delete',
+    ],
 
 
 ];

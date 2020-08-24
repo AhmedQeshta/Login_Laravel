@@ -7,6 +7,7 @@ use App\Model\Offer;
 use Illuminate\Http\Request;
 use File;
 use Mcamara\LaravelLocalization\Facades\LaravelLocalization;
+use mysql_xdevapi\Exception;
 
 class CrudController extends Controller
 {
@@ -42,7 +43,7 @@ class CrudController extends Controller
     {
         // Validation
        //  use from class offerRequest
-        $request->validate($request->rules(),$request->messages());
+//        $request->validate($request->rules(),$request->messages());
 
         // save data in DB
         // to img store
@@ -52,8 +53,8 @@ class CrudController extends Controller
         }
 
         $request['photo'] = $imagePath ;
-        $request['name_ar'] = $request->name_ar;
-        $request['name_en'] = $request->name_en ;
+//        $request['name_ar'] = $request->name_ar;
+  //      $request['name_en'] = $request->name_en ;
         Offer::create($request->all());
 
 
@@ -80,7 +81,14 @@ class CrudController extends Controller
      */
     public function edit($id)
     {
-        //
+        try {
+            $offer = Offer::whereId($id)->firstOrFail();;
+            return view('offers.edit',compact('offer'));
+        }catch (\Throwable $th){
+            return redirect()->route('offers.index')
+                ->with('error','not Found this , test message');
+        }
+
     }
 
     /**
@@ -92,7 +100,32 @@ class CrudController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
+        try {
+            $offer = Offer::findOrFail($id);
+            // Validation
+            //  use from class offerRequest
+            $request->validate($this->rules($id),$this->messages());
+
+            /** edt image **/
+            if($request->hasFile('offer_image')){
+                // update img
+                $imagePath = parent::uploadImage($request->file('offer_image'),'image/offers');
+                // remove old image
+                if(File::exists( public_path($offer->photo))){
+                    File::delete(public_path($offer->photo));
+                }
+                $offer->photo = $imagePath;
+            }
+
+            $offer->update($request->all());
+
+            return redirect('/offers')
+                ->with('success', 'success Update');
+
+        }catch (\Throwable $th){
+            return redirect()->route('offers.index')
+                ->with('error','not Found this , test message');
+        }
     }
 
     /**
@@ -103,7 +136,45 @@ class CrudController extends Controller
      */
     public function destroy($id)
     {
-        //
+        $offer =  Offer::findOrFail($id);
+
+        /**  to delete the image also
+         **
+         ** if use soft deletes delete this code
+         */
+        if(File::exists(public_path($offer->photo))){
+
+            File::delete(public_path($offer->photo));
+        }
+        $offer->delete();
+
+        return redirect()->route('offers.index')
+            ->with('success','success delete');
+    }
+
+    private function rules($id= null){
+        $rules = [];
+        if($id){
+            $rules['name_ar'] = 'required|min:3|max:50|unique:offers,name_ar,' . $id ;
+            $rules['name_en'] = 'required|min:3|max:50|unique:offers,name_en,' . $id ;
+            $rules['price'] = 'required|min:1|max:6';
+            $rules['offer_image'] = 'mimes:png,jpg,jpeg' ;
+        }else {
+            $rules['name_ar'] = 'required|min:3|max:50|unique:offers,name_ar' ;
+            $rules['name_en'] = 'required|min:3|max:50|unique:offers,name_en' ;
+            $rules['price'] = 'required|min:1|max:6|' ;
+            $rules['offer_image'] = 'required|mimes:png,jpg,jpeg' ;
+        }
+
+        return $rules;
+    }
+
+    public function messages(){
+        $messages = [
+            'name_ar.unique' => __('test.offerNameUniq'),
+            'name_en.unique' => __('test.offerNameUniq'),
+        ];
+        return $messages;
     }
 
 
