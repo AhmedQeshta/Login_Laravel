@@ -30,8 +30,19 @@ Route::group(['prefix' => LaravelLocalization::setLocale(), 'middleware' => [ 'l
         Route::get('destroy/{id?}', 'CrudController@destroy')->name('offers.destroy');
     });
 
+    // ajax
+    Route::group(['prefix' => 'ajax-offer'],function (){
+        Route::get('/', 'OfferAjaxController@index')->name('ajax-offer.index');
+        Route::get('create', 'OfferAjaxController@create')->name('ajax-offer.create');
+        Route::post('store', 'OfferAjaxController@store')->name('ajax-offer.store');
+//        Route::get('edit/{id}', 'OfferAjaxController@edit')->name('ajax-offer.edit');
+//        Route::put('update/{id}', 'OfferAjaxController@update')->name('ajax-offer.update');
+//        Route::get('destroy/{id?}', 'OfferAjaxController@destroy')->name('ajax-offer.destroy');
+    });
+
 //    event listener
-    Route::get('youtube','CrudController@getVideo')->name('youtube.video')->middleware('auth');
+    Route::get('youtube','CrudController@getVideo')->name('youtube.video');
+    Route::get('youtube/{id}','CrudController@getVideoOne')->name('youtube.videoOne');
 //    login facebook
     Route::get('/redirect', 'SocialAuthFacebookController@redirect');
     Route::get('/callback', 'SocialAuthFacebookController@callback');

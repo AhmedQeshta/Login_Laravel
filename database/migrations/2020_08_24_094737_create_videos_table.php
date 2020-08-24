@@ -16,6 +16,7 @@ class CreateVideosTable extends Migration
         Schema::create('videos', function (Blueprint $table) {
             $table->id();
             $table->string('name');
+            $table->string('src');
             $table->integer('viewers')->default(0);
             $table->timestamps();
         });

@@ -56,9 +56,9 @@ class CrudController extends Controller
         if($request->hasFile('offer_image')){
             // update img
             $imagePath = parent::uploadImage($request->file('offer_image'),'image/offers');
+            $request['photo'] = $imagePath ;
         }
 
-        $request['photo'] = $imagePath ;
 //        $request['name_ar'] = $request->name_ar;
   //      $request['name_en'] = $request->name_en ;
         Offer::create($request->all());
@@ -193,19 +193,30 @@ class CrudController extends Controller
     //    new function Get Video
     public function getVideo(){
         try {
-            $video = Video::firstOrFail();
-            $videoKey = 'video_' . $video->id ;
-
-            if (!Session::has($videoKey)){
-                    event(new VideoViewer($video));
-                    Session::put($videoKey,1);
-            }
-
-            return view('video',compact('video'));
+            $videos = Video::where([]);
+            $videos = $videos->latest()->paginate(3);
+            return view('video',compact('videos'))
+                ->with('i', (request()->input('page', 1) - 1) * 3);
         }catch (\Throwable $th){
             return redirect()->route('offers.index');
         }
     }
+    public function getVideoOne($id){
+        try {
+            $video_one = Video::findOrFail($id);
+            $videoKey = 'video_' . $id ;
+
+            if (!Session::has($videoKey)){
+                event(new VideoViewer($video_one));
+                Session::put($videoKey,1);
+            }
+
+            return view('video_one',compact('video_one'));
+        }catch (\Throwable $th){
+            return redirect()->route('offers.index');
+        }
+    }
+
 
 
 }

@@ -27,6 +27,7 @@ return [
     'message'=>[
         'edit' => 'Edit',
         'delete' => 'Delete',
+        'ajax-offerDelete' => 'Ajax-Delete',
     ],
 
 

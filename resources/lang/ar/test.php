@@ -27,6 +27,7 @@ return [
     'message'=>[
         'edit' => 'تعديل',
         'delete' => 'حذف',
+        'ajax-offerDelete' => 'حذف بالأجكس',
     ],
 
 ];
