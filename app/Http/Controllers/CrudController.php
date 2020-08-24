@@ -9,6 +9,8 @@ use App\Model\Video;
 use App\User;
 use Illuminate\Http\Request;
 use File;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Session;
 use Mcamara\LaravelLocalization\Facades\LaravelLocalization;
 use mysql_xdevapi\Exception;
 
@@ -183,9 +185,14 @@ class CrudController extends Controller
 
     //    new function Get Video
     public function getVideo(){
-        $user = User::first();
-        $video = Video::first();
-        event(new VideoViewer($video));
+        $video = Video::firstOrFail();
+        $videoKey = 'video_' . $video->id ;
+
+        if (!Session::has($videoKey)){
+                event(new VideoViewer($video));
+                Session::put($videoKey,1);
+        }
+
         return view('video',compact('video'));
     }
 
