@@ -55,12 +55,6 @@ return [
             'visibility' => 'public',
         ],
 
-//        'offers' => [
-//            'driver' => 'local',
-//            'root' => storage_path('app/public/image/offers/'),
-//            'url' => env('APP_URL').'/public',
-//            'visibility' => 'public',
-//        ],
 
         's3' => [
             'driver' => 's3',

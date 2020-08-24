@@ -29,6 +29,10 @@ Route::group(['prefix' => LaravelLocalization::setLocale(), 'middleware' => [ 'l
         Route::put('update/{id}', 'CrudController@update')->name('offers.update');
         Route::get('destroy/{id?}', 'CrudController@destroy')->name('offers.destroy');
     });
+
+//    event listener
+    Route::get('youtube','CrudController@getVideo')->name('youtube.video')->middleware('auth');
+//    login facebook
     Route::get('/redirect', 'SocialAuthFacebookController@redirect');
     Route::get('/callback', 'SocialAuthFacebookController@callback');
 });

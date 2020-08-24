@@ -2,8 +2,11 @@
 
 namespace App\Http\Controllers;
 
+use App\Events\VideoViewer;
 use App\Http\Requests\offerRequest;
 use App\Model\Offer;
+use App\Model\Video;
+use App\User;
 use Illuminate\Http\Request;
 use File;
 use Mcamara\LaravelLocalization\Facades\LaravelLocalization;
@@ -175,6 +178,15 @@ class CrudController extends Controller
             'name_en.unique' => __('test.offerNameUniq'),
         ];
         return $messages;
+    }
+
+
+    //    new function Get Video
+    public function getVideo(){
+        $user = User::first();
+        $video = Video::first();
+        event(new VideoViewer($video));
+        return view('video',compact('video'));
     }
 
 

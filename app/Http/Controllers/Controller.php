@@ -10,10 +10,9 @@ use Illuminate\Routing\Controller as BaseController;
 class Controller extends BaseController
 {
     use AuthorizesRequests, DispatchesJobs, ValidatesRequests;
-
+//    ues in common by parent::(NAME_CLASS)
 //    upload image
-    public function uploadImage($image , $dir = 'image')
-    {
+    public function uploadImage($image , $dir = 'image'){
         $uploadImage = $image;
         $imagename = time(). '.' . $uploadImage->getClientOriginalExtension();
         $direction = public_path('/'.$dir.'/');
