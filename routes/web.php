@@ -37,7 +37,7 @@ Route::group(['prefix' => LaravelLocalization::setLocale(), 'middleware' => [ 'l
         Route::post('store', 'OfferAjaxController@store')->name('ajax-offer.store');
 //        Route::get('edit/{id}', 'OfferAjaxController@edit')->name('ajax-offer.edit');
 //        Route::put('update/{id}', 'OfferAjaxController@update')->name('ajax-offer.update');
-//        Route::get('destroy/{id?}', 'OfferAjaxController@destroy')->name('ajax-offer.destroy');
+        Route::post('destroy/{id?}', 'OfferAjaxController@destroy')->name('ajax-offer.destroy');
     });
 
 //    event listener

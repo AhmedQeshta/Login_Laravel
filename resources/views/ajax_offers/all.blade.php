@@ -5,16 +5,14 @@
 @section('content')
     <div class="container py-5">
         <div class="col clo-md-12 py-2">
-            @if (session('error'))
-                <div class="alert alert-danger" role="alert">
-                    {{ session('error') }}
-                </div>
-            @elseif(session('success'))
-                <div class="alert alert-success" role="alert">
-                    {{ session('success') }}
-                </div>
-            @endif
+            <div class="alert alert-success " id="success_msg" style="display: none" role="alert">
+                Save success
+            </div>
+            <div class="alert alert-danger " id="error_msg" style="display: none" role="alert">
+                Error
+            </div>
         </div>
+
         <table class="table">
             <thead class="thead-dark">
             <tr>
@@ -28,7 +26,7 @@
             <tbody>
 
             @forelse($offers as $offer)
-            <tr>
+            <tr class="OfferRow{{$offer->id}}">
                 <td>{{ ++$i }}</td>
                 <td>{{$offer->name}}</td>
                 <td>{{$offer->price}} <strong> $ </strong></td>
@@ -36,7 +34,7 @@
                 <td>
                     <span class="px-2">
                     <a href="{{route('offers.edit',$offer->id)}}" class="btn btn-success">{{__('test.message.edit')}}</a>
-                    <a href="{{route('offers.destroy',$offer->id)}}" class="btn btn-danger">{{__('test.message.ajax-offerDelete')}}</a>
+                    <a href="" offer_id="{{$offer->id}}" class="btn btn-danger delete_Ajax">{{__('test.message.ajax-offerDelete')}}</a>
                     </span>
                 </td>
 
@@ -59,4 +57,31 @@
     </div>
 
 
+@endsection
+
+@section('script')
+    <script>
+        $(document).on('click','.delete_Ajax',function (e){
+            e.preventDefault();
+            var offerId =   $(this).attr('offer_id');
+                console.log(offerId)
+            $.ajax({
+                type : 'post' ,
+                url :'{{route('ajax-offer.destroy')}}',
+                data : {
+                    '_token' : "{{csrf_token()}}",
+                    'id' : offerId,
+                },
+                success : function (data){
+                    if (data.status == true){
+                        $('#success_msg').show();
+                    }
+                    $('.OfferRow' + data.id).remove();
+                },
+                error:function (reject){
+
+                }
+            });
+        });
+    </script>
 @endsection

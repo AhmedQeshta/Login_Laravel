@@ -5,7 +5,7 @@ namespace App\Http\Controllers;
 use App\Model\Offer;
 use Illuminate\Http\Request;
 use Mcamara\LaravelLocalization\Facades\LaravelLocalization;
-
+use File;
 class OfferAjaxController extends Controller
 {
     /**
@@ -16,7 +16,7 @@ class OfferAjaxController extends Controller
     public function index(){
         $offers = Offer::select('id','name_'.LaravelLocalization::getCurrentLocale(). ' as name','price','photo');
         $offers = $offers->latest()->paginate(2);
-        return view('offers.all',compact('offers'))->with('i', (request()->input('page', 1) - 1) * 2);
+        return view('ajax_offers.all',compact('offers'))->with('i', (request()->input('page', 1) - 1) * 2);
     }
 
 
@@ -53,6 +53,46 @@ class OfferAjaxController extends Controller
             ]);
         }
     }
+
+
+    /**
+     * Remove the specified resource from storage.
+     *
+     * @param Request $request
+     * @return \Illuminate\Http\JsonResponse
+     */
+    public function destroy(Request $request)
+    {
+        try {
+            $offer =  Offer::findOrFail($request->id);
+
+            /**  to delete the image also
+             **
+             ** if use soft deletes delete this code
+             */
+            if(File::exists(public_path($offer->photo))){
+
+                File::delete(public_path($offer->photo));
+            }
+
+            $offer->delete();
+            if ($offer) return response()->json([
+                'status' => true,
+                'message' => 'Good Jop , this Offer Delete successfully',
+                'id' => $request->id,
+            ]);
+        }catch (\Throwable $th){
+            if (!$offer){
+                return response()->json([
+                    'status' => false,
+                    'message' => 'Sorry  , this Offer not Delete successfully , try Again ',
+                ]);
+            }
+        }
+
+    }
+
+
 
     private function rules($id= null){
         $rules = [];
