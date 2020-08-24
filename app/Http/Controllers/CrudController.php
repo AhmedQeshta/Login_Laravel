@@ -7,6 +7,7 @@ use App\Http\Requests\offerRequest;
 use App\Model\Offer;
 use App\Model\Video;
 use App\User;
+use Illuminate\Auth\AuthenticationException;
 use Illuminate\Http\Request;
 use File;
 use Illuminate\Support\Facades\Auth;
@@ -141,20 +142,26 @@ class CrudController extends Controller
      */
     public function destroy($id)
     {
-        $offer =  Offer::findOrFail($id);
+        try {
+            $offer =  Offer::findOrFail($id);
 
-        /**  to delete the image also
-         **
-         ** if use soft deletes delete this code
-         */
-        if(File::exists(public_path($offer->photo))){
+            /**  to delete the image also
+             **
+             ** if use soft deletes delete this code
+             */
+            if(File::exists(public_path($offer->photo))){
 
-            File::delete(public_path($offer->photo));
+                File::delete(public_path($offer->photo));
+            }
+            $offer->delete();
+
+            return redirect()->route('offers.index')
+                ->with('success','success delete');
+        }catch (\Throwable $th){
+            return redirect()->route('offers.index')
+                ->with('error','not Found this , test message');
         }
-        $offer->delete();
 
-        return redirect()->route('offers.index')
-            ->with('success','success delete');
     }
 
     private function rules($id= null){
@@ -185,15 +192,19 @@ class CrudController extends Controller
 
     //    new function Get Video
     public function getVideo(){
-        $video = Video::firstOrFail();
-        $videoKey = 'video_' . $video->id ;
+        try {
+            $video = Video::firstOrFail();
+            $videoKey = 'video_' . $video->id ;
 
-        if (!Session::has($videoKey)){
-                event(new VideoViewer($video));
-                Session::put($videoKey,1);
+            if (!Session::has($videoKey)){
+                    event(new VideoViewer($video));
+                    Session::put($videoKey,1);
+            }
+
+            return view('video',compact('video'));
+        }catch (\Throwable $th){
+            return redirect()->route('offers.index');
         }
-
-        return view('video',compact('video'));
     }
 
 
