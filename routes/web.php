@@ -47,6 +47,17 @@ Route::group(['prefix' => LaravelLocalization::setLocale(), 'middleware' => [ 'l
     });
 
 //    ########################End#####################
+//  #################### Gard and auth #####################
+
+    Route::group(['prefix' => 'auth','namespace'=>'Auth'],function (){
+        Route::get('site','CustomAuthController@sitePage')->middleware('auth:web','CheckAge')->name('auth.site');
+        Route::get('admin','CustomAuthController@adminPage')->middleware('auth:admin' , 'CheckAge')->name('auth.admin');
+        Route::get('admin/login','CustomAuthController@adminLogin')->name('auth.admin.login');
+        Route::post('admin/login','CustomAuthController@saveAdminLogin')->name('auth.save.admin.login');
+//        Route::get('/admin/logout','CustomAuthController@adminLogout')->name('auth.admin.logout');
+    });
+
+//    ########################End#####################
 
 //    event listener
     Route::get('youtube','CrudController@getVideo')->name('youtube.video');

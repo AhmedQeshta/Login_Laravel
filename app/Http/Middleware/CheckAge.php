@@ -16,7 +16,11 @@ class CheckAge
      */
     public function handle($request, Closure $next)
     {
-       $age = Auth::user()->age;
+        if (auth('web')){
+            $age = Auth::user()->age;
+        }elseif (auth('admin')){
+            $age = auth('admin')->age;
+        }
         if ($age < 18){
             return redirect()->route('home');
         }
