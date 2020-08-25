@@ -34,7 +34,7 @@ class User extends Authenticatable implements MustVerifyEmailAlias
      */
 
     protected $fillable = [
-        'name', 'email', 'password','phone','expire',
+        'name', 'email', 'password','phone','expire','age',
     ];
 
     /**

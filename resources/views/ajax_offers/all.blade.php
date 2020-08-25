@@ -33,7 +33,7 @@
                 <td><img class="d-flex text-center " src="{{asset($offer->photo)}}" width="100px"  alt="{{$offer->name_ar}}"></td>
                 <td>
                     <span class="px-2">
-                    <a href="{{route('offers.edit',$offer->id)}}" class="btn btn-success">{{__('test.message.edit')}}</a>
+                    <a href="{{route('ajax-offer.edit',$offer->id)}}" class="btn btn-success">{{__('test.message.edit')}}</a>
                     <a href="" offer_id="{{$offer->id}}" class="btn btn-danger delete_Ajax">{{__('test.message.ajax-offerDelete')}}</a>
                     </span>
                 </td>

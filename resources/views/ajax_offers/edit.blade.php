@@ -11,18 +11,15 @@
                 <div class="card">
                     <div class="card-header">{{ __('test.offers') }}</div>
                     <div class="col clo-md-12 py-2">
-                        @if (session('error'))
-                            <div class="alert alert-danger" role="alert">
-                                {{ session('error') }}
-                            </div>
-                        @elseif(session('success'))
-                            <div class="alert alert-success" role="alert">
-                                {{ session('success') }}
-                            </div>
-                        @endif
+                        <div class="alert alert-success " id="success_msg" style="display: none" role="alert">
+                            Save success
+                        </div>
+                        <div class="alert alert-danger " id="error_msg" style="display: none" role="alert">
+                            Error
+                        </div>
                     </div>
                     <div class="card-body">
-                            <form action="{{route('offers.update',$offer->id)}}" method="post" enctype="multipart/form-data">
+                            <form action="" id="offerFormUpdate" method="post" enctype="multipart/form-data">
                                 @csrf
                                 @method('PUT')
                                 <div class="form-group text-center">
@@ -43,7 +40,7 @@
                                             </span>
                                         @enderror
                                 </div>
-
+                                <input type="hidden" style="display: none" value="{{$offer->id}}"  name="id">
                                 <div class="form-group">
                                     <label for="name_en">{{__('test.NameEN')}}</label>
                                     <input type="text" value="{{$offer->name_en}}" required class="form-control @error('name_en') is-invalid @enderror" name="name_en" value="{{ old('name_en') }}"  >
@@ -65,7 +62,7 @@
                                 </div>
 
                                 <div class="form-action">
-                                    <input type="submit" value="save" class="btn btn-primary">
+                                    <a  id="save_offer_update" class="btn btn-primary">save</a>
                                     <input type="reset" value="cancel" class="btn btn-default">
                                 </div>
 
@@ -76,3 +73,38 @@
         </div>
     </div>
 @endsection
+
+@section('script')
+    <script>
+        $(document).on('click','#save_offer_update',function (e){
+            e.preventDefault();
+
+            //get all data from form (photo , name_ar , name_en , price , ...)
+            var form = $('#offerFormUpdate');
+            if (window.FormData){
+                var formdataupdate = new FormData(form[0]);
+            }
+
+            $.ajax({
+                type : 'post' ,
+                enctype : 'multipart/form-data' ,
+                url :'{{route('ajax-offer.update')}}',
+                data : formdataupdate,
+                processData : false,
+                contentType : false,
+                cache : false,
+                success : function (data){
+                    if (data.status == true){
+                        $('#success_msg').show();
+                    }
+                },
+                error:function (reject){
+                    if(data.status == false){
+                        $('#error_msg').show();
+                    }
+                }
+            });
+        });
+    </script>
+@endsection
+

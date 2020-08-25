@@ -60,7 +60,6 @@
 
                                 <div class="form-action">
                                     <a  id="save_offer" class="btn btn-primary">save</a>
-{{--                                    <input type="submit" id="save_offer" value="save" class="btn btn-primary">--}}
                                     <input type="reset" value="cancel" class="btn btn-default">
                                 </div>
 

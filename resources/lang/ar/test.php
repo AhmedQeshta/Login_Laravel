@@ -30,4 +30,6 @@ return [
         'ajax-offerDelete' => 'حذف بالأجكس',
     ],
 
+    'age' => 'العمر'
+
 ];

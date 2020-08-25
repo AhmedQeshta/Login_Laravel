@@ -35,10 +35,18 @@ Route::group(['prefix' => LaravelLocalization::setLocale(), 'middleware' => [ 'l
         Route::get('/', 'OfferAjaxController@index')->name('ajax-offer.index');
         Route::get('create', 'OfferAjaxController@create')->name('ajax-offer.create');
         Route::post('store', 'OfferAjaxController@store')->name('ajax-offer.store');
-//        Route::get('edit/{id}', 'OfferAjaxController@edit')->name('ajax-offer.edit');
-//        Route::put('update/{id}', 'OfferAjaxController@update')->name('ajax-offer.update');
-        Route::post('destroy/{id?}', 'OfferAjaxController@destroy')->name('ajax-offer.destroy');
+        Route::get('edit/{id}', 'OfferAjaxController@edit')->name('ajax-offer.edit');
+        Route::put('update', 'OfferAjaxController@update')->name('ajax-offer.update');
+        Route::post('destroy', 'OfferAjaxController@destroy')->name('ajax-offer.destroy');
     });
+
+//  #################### Gard and mult auth #####################
+
+    Route::group(['prefix' => 'adults','namespace'=>'Auth','middleware'=>['CheckAge','auth']],function (){
+        Route::get('/','CustomAuthController@adult')->name('adult');
+    });
+
+//    ########################End#####################
 
 //    event listener
     Route::get('youtube','CrudController@getVideo')->name('youtube.video');
@@ -47,5 +55,6 @@ Route::group(['prefix' => LaravelLocalization::setLocale(), 'middleware' => [ 'l
     Route::get('/redirect', 'SocialAuthFacebookController@redirect');
     Route::get('/callback', 'SocialAuthFacebookController@callback');
 });
+
 
 

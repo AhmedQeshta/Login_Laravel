@@ -56,6 +56,75 @@ class OfferAjaxController extends Controller
 
 
     /**
+     * Show the form for editing the specified resource.
+     *
+     * @param  int  $id
+     * @return \Illuminate\Contracts\Foundation\Application| \Illuminate\Contracts\View\Factory|\Illuminate\Http\RedirectResponse|\Illuminate\View\View
+     */
+    public function edit(Request $request)
+    {
+        try {
+            $offer = Offer::whereId($request->id)->firstOrFail();;
+            return view('ajax_offers.edit',compact('offer'));
+        }catch (\Throwable $th){
+            return response()->json([
+                'status' => false,
+                'message' => 'Sorry  , this Offer not Add successfully , try Again ',
+            ]);
+        }
+
+    }
+
+    /**
+     * Update the specified resource in storage.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @param  int  $id
+     * @return \Illuminate\Http\Response
+     */
+    public function update(Request $request)
+    {
+        try {
+            $offer = Offer::findOrFail($request->id);
+            // Validation
+            //  use from class offerRequest
+            $request->validate($this->rules($request->id),$this->messages());
+
+            /** edt image **/
+            if($request->hasFile('offer_image')){
+                // update img
+                $imagePath = parent::uploadImage($request->file('offer_image'),'image/offers');
+                // remove old image
+                if(File::exists( public_path($offer->photo))){
+                    File::delete(public_path($offer->photo));
+                }
+                $offer->photo = $imagePath;
+            }
+
+            $offer->update($request->all());
+
+            if ($offer){
+                return response()->json([
+                    'status' => true,
+                    'message' => 'Good Jop , this Offer Add successfully',
+                ]);
+            }else{
+                return response()->json([
+                    'status' => false,
+                    'message' => 'Sorry  , this Offer not Add successfully , try Again ',
+                ]);
+            }
+
+        }catch (\Throwable $th){
+            return response()->json([
+                'status' => false,
+                'message' => 'Sorry  , this Offer not Add successfully , try Again ',
+            ]);
+        }
+    }
+
+
+    /**
      * Remove the specified resource from storage.
      *
      * @param Request $request
@@ -93,7 +162,7 @@ class OfferAjaxController extends Controller
     }
 
 
-
+/////////////////////////////// rules--------------------------------------
     private function rules($id= null){
         $rules = [];
         if($id){

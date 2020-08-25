@@ -30,5 +30,7 @@ return [
         'ajax-offerDelete' => 'Ajax-Delete',
     ],
 
+    'age' => 'Age',
+
 
 ];
