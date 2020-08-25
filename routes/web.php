@@ -67,7 +67,21 @@ Route::group(['prefix' => LaravelLocalization::setLocale(), 'middleware' => [ 'l
 
 //######################### Relation Route ###################
     Route::group(['prefix' => 'relation','namespace'=>'Relation'],function (){
+        //  one to one
         Route::get('one-to-one','RelationsController@hasOneRelation')->name('relation.oneToOne');
+        Route::get('one-to-one-reserve','RelationsController@hasOneReserveRelation')->name('relation.oneToOneReserve');
+        Route::get('get-user-has-phone','RelationsController@getUserHasPhone')->name('relation.getUserHasPhone');
+        Route::get('get-user-has-no-phone','RelationsController@getUserHasNoPhone')->name('relation.getUserHasNoPhone');
+
+        //  one to many
+        Route::get('hospital-has-many','RelationsController@getHospitalDoctorRelation');
+        Route::get('allHospital','RelationsController@getAllHospitalRelation')->name('relation.AllHospital');
+        Route::get('doctor/{hospital_id}','RelationsController@getdoctorRelation')->name('relation.doctor');
+        Route::get('hospital-has_doctors','RelationsController@getHospitalHasDoctorsRelation')->name('relation.HospitalHasDoctors');
+        Route::get('hospital-has_doctors_job_doctor','RelationsController@getHospitalHasDoctorsJobDoctorRelation')->name('relation.HospitalHasDoctorsJobDoctor');
+        Route::get('hospital-has_no_doctors','RelationsController@getHospitalHasNoDoctorsRelation')->name('relation.HospitalHasNoDoctors');
+        Route::get('hospital/delete/{hospital_id}','RelationsController@hospitalDelete')->name('relation.hospitalDelete');
+
     });
 
 });

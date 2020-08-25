@@ -57,7 +57,8 @@ class User extends Authenticatable implements MustVerifyEmailAlias
 
 //################ Relations ################
     // one to one (user ---> phone)
-    public function phone(){
+    public function phoneUser(): \Illuminate\Database\Eloquent\Relations\HasOne
+    {
         return $this->hasOne('App\Model\Phone','user_id','id');
     }
 //################# End ###################
