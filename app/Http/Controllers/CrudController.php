@@ -204,12 +204,8 @@ class CrudController extends Controller
     public function getVideoOne($id){
         try {
             $video_one = Video::findOrFail($id);
-            $videoKey = 'video_' . $id ;
+            event(new VideoViewer($video_one));
 
-            if (!Session::has($videoKey)){
-                event(new VideoViewer($video_one));
-                Session::put($videoKey,1);
-            }
 
             return view('video_one',compact('video_one'));
         }catch (\Throwable $th){

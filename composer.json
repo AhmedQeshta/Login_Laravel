@@ -16,7 +16,8 @@
         "laravel/socialite": "^4.4",
         "laravel/tinker": "^2.0",
         "laravel/ui": "^2.1",
-        "mcamara/laravel-localization": "^1.5"
+        "mcamara/laravel-localization": "^1.5",
+      "ext-mongodb": "*"
     },
     "require-dev": {
         "facade/ignition": "^2.0",

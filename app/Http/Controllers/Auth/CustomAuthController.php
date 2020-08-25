@@ -30,7 +30,7 @@ class CustomAuthController extends Controller
             ]);
             if (Auth::guard('admin')->attempt(['email' => $request->email, 'password' => $request->password])) {
 
-                return redirect()->intended('/auth/admin');
+                return redirect()->route('auth.admin');
             }
         } catch (ValidationException $e) {
             return back()->withInput($request->only('email'));

@@ -54,17 +54,22 @@ Route::group(['prefix' => LaravelLocalization::setLocale(), 'middleware' => [ 'l
         Route::get('admin','CustomAuthController@adminPage')->middleware('auth:admin' , 'CheckAge')->name('auth.admin');
         Route::get('admin/login','CustomAuthController@adminLogin')->name('auth.admin.login');
         Route::post('admin/login','CustomAuthController@saveAdminLogin')->name('auth.save.admin.login');
-//        Route::get('/admin/logout','CustomAuthController@adminLogout')->name('auth.admin.logout');
     });
 
 //    ########################End#####################
 
 //    event listener
     Route::get('youtube','CrudController@getVideo')->name('youtube.video');
-    Route::get('youtube/{id}','CrudController@getVideoOne')->name('youtube.videoOne');
+    Route::get('youtube/{id}','CrudController@getVideoOne')->name('youtube.videoOne')->middleware('auth:admin,web');
 //    login facebook
     Route::get('/redirect', 'SocialAuthFacebookController@redirect');
     Route::get('/callback', 'SocialAuthFacebookController@callback');
+
+//######################### Relation Route ###################
+    Route::group(['prefix' => 'relation','namespace'=>'Relation'],function (){
+        Route::get('one-to-one','RelationsController@hasOneRelation')->name('relation.oneToOne');
+    });
+
 });
 
 

@@ -5,6 +5,7 @@ namespace App\Listeners;
 use App\Events\VideoViewer;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Queue\InteractsWithQueue;
+use MongoDB\Driver\Session;
 
 class increaseCounter
 {
@@ -26,11 +27,17 @@ class increaseCounter
      */
     public function handle(VideoViewer $event)
     {
-        $this->updateViewer($event->video);
+        if (!session()->has('videoIsVisited')){
+            $this->updateViewer($event->video);
+        }else{
+            return false;
+        }
     }
 
     function updateViewer($video){
         $video->viewers ++;
         $video->save();
+
+        session()->put('videoIsVisited',$video->id);
     }
 }
