@@ -24,41 +24,41 @@
                                 @method('PUT')
                                 <div class="form-group text-center">
                                         <input type="file"  class="@error('photo') is-invalid @enderror"  name="offer_image">
-                                         @error('photo')
-                                            <div class="invalid-feedback alert-danger text-center" role="alert">
-                                                <strong>{{ $message }}</strong>
+
+                                            <div id="photo_error" class=" alert-danger text-center" role="alert">
+                                                <strong></strong>
                                             </div>
-                                        @enderror
+
                                 </div>
 
                                 <div class="form-group">
                                     <label for="name_ar">{{__('test.NameAR')}}</label>
-                                    <input type="text" value="{{$offer->name_ar}}" required class="form-control @error('name_ar') is-invalid @enderror" name="name_ar" value="{{ old('name_ar') }}"  >
-                                        @error('name_ar')
-                                            <span class="invalid-feedback alert-danger" role="alert">
-                                                <strong>{{ $message }}</strong>
+                                    <input type="text" id="input_name_ar_error" value="{{$offer->name_ar}}" required class="form-control" name="name_ar" value="{{ old('name_ar') }}"  >
+
+                                            <span id="name_ar_error" class="alert-danger text-center" role="alert">
+                                                <strong></strong>
                                             </span>
-                                        @enderror
+
                                 </div>
                                 <input type="hidden" style="display: none" value="{{$offer->id}}"  name="id">
                                 <div class="form-group">
                                     <label for="name_en">{{__('test.NameEN')}}</label>
-                                    <input type="text" value="{{$offer->name_en}}" required class="form-control @error('name_en') is-invalid @enderror" name="name_en" value="{{ old('name_en') }}"  >
-                                    @error('name_en')
-                                    <span class="invalid-feedback alert-danger" role="alert">
-                                                <strong>{{ $message }}</strong>
+                                    <input type="text" id="input_name_en_error" value="{{$offer->name_en}}" required class="form-control" name="name_en" value="{{ old('name_en') }}"  >
+
+                                    <span id="name_en_error" class="alert-danger text-center" role="alert">
+                                                <strong></strong>
                                             </span>
-                                    @enderror
+
                                 </div>
 
                                 <div class="form-group">
                                     <label for="price">price</label>
-                                    <input type="text" value="{{$offer->price}}" required class="form-control @error('price') is-invalid @enderror" name="price" value="{{ old('price') }}"  >
-                                    @error('price')
-                                    <span class="invalid-feedback alert-danger" role="alert">
-                                                <strong>{{ $message }}</strong>
+                                    <input type="text" id="input_price_error" value="{{$offer->price}}" required class="form-control" name="price" value="{{ old('price') }}"  >
+
+                                    <span id="price_error" class="alert-danger text-center" role="alert">
+                                                <strong></strong>
                                             </span>
-                                    @enderror
+
                                 </div>
 
                                 <div class="form-action">
@@ -78,6 +78,13 @@
     <script>
         $(document).on('click','#save_offer_update',function (e){
             e.preventDefault();
+            $('#photo_error ').text('');
+            $('#name_ar_error').text('');
+            $('#name_en_error').text('');
+            $('#price_error').text('');
+            $('#input_name_ar_error').removeClass('is-invalid');
+            $('#input_name_en_error').removeClass('is-invalid');
+            $('#input_price_error').removeClass('is-invalid');
 
             //get all data from form (photo , name_ar , name_en , price , ...)
             var form = $('#offerFormUpdate');
@@ -99,9 +106,11 @@
                     }
                 },
                 error:function (reject){
-                    if(data.status == false){
-                        $('#error_msg').show();
-                    }
+                    var response = $.parseJSON(reject.responseText);
+                    $.each(response.errors, function (key, val) {
+                        $("#" + key + "_error").text(val[0]);
+                        $("#" + "input_" + key + "_error").addClass('is-invalid');
+                    });
                 }
             });
         });

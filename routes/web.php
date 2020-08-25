@@ -16,11 +16,18 @@ use Illuminate\Support\Facades\Route;
 
 
 Route::group(['prefix' => LaravelLocalization::setLocale(), 'middleware' => [ 'localeSessionRedirect', 'localizationRedirect', 'localeViewPath' ]], function() {
+################################################# Auth page ########################################3######
     Auth::routes(['verify' => true]);
+    Route::get('/home', 'HomeController@index')->name('home');
+################################################# End welcome page ########################################3######
+
+#################################################### End Auth ########################################3######
     Route::get('/', function () {
         return view('welcome');
     });
-    Route::get('/home', 'HomeController@index')->name('home');
+################################################# End welcome page ########################################3######
+
+#################################################### offers page ########################################3######
     Route::group(['prefix' => 'offers'],function (){
         Route::get('/', 'CrudController@index')->name('offers.index');
         Route::get('create', 'CrudController@create')->name('offers.create');
@@ -29,8 +36,10 @@ Route::group(['prefix' => LaravelLocalization::setLocale(), 'middleware' => [ 'l
         Route::put('update/{id}', 'CrudController@update')->name('offers.update');
         Route::get('destroy/{id?}', 'CrudController@destroy')->name('offers.destroy');
     });
+################################################# End offers page ########################################3######
 
-    // ajax
+
+#################################################### Ajax offers page ####################################3######
     Route::group(['prefix' => 'ajax-offer'],function (){
         Route::get('/', 'OfferAjaxController@index')->name('ajax-offer.index');
         Route::get('create', 'OfferAjaxController@create')->name('ajax-offer.create');
@@ -39,33 +48,33 @@ Route::group(['prefix' => LaravelLocalization::setLocale(), 'middleware' => [ 'l
         Route::put('update', 'OfferAjaxController@update')->name('ajax-offer.update');
         Route::post('destroy', 'OfferAjaxController@destroy')->name('ajax-offer.destroy');
     });
+################################################# End Ajax offers page ###################################3######
 
-//  #################### Gard and mult auth #####################
-
+################################################# Gard and multi auth ###################################3######
+    //New Middleware(CheckAge (if < 18))
     Route::group(['prefix' => 'adults','namespace'=>'Auth','middleware'=>['CheckAge','auth']],function (){
         Route::get('/','CustomAuthController@adult')->name('adult');
     });
-
-//    ########################End#####################
-//  #################### Gard and auth #####################
-
+    //New gard(admin)
     Route::group(['prefix' => 'auth','namespace'=>'Auth'],function (){
         Route::get('site','CustomAuthController@sitePage')->middleware('auth:web','CheckAge')->name('auth.site');
         Route::get('admin','CustomAuthController@adminPage')->middleware('auth:admin' , 'CheckAge')->name('auth.admin');
         Route::get('admin/login','CustomAuthController@adminLogin')->name('auth.admin.login');
         Route::post('admin/login','CustomAuthController@saveAdminLogin')->name('auth.save.admin.login');
     });
+################################################# End Gard and multi auth ###################################3######
 
-//    ########################End#####################
+################################################# event listener ###################################3######
+        Route::get('youtube','CrudController@getVideo')->name('youtube.video');
+        Route::get('youtube/{id}','CrudController@getVideoOne')->name('youtube.videoOne')->middleware('auth:admin,web');
+################################################# End event listener ###################################3######
 
-//    event listener
-    Route::get('youtube','CrudController@getVideo')->name('youtube.video');
-    Route::get('youtube/{id}','CrudController@getVideoOne')->name('youtube.videoOne')->middleware('auth:admin,web');
-//    login facebook
+################################################# login facebook ###################################3######
     Route::get('/redirect', 'SocialAuthFacebookController@redirect');
     Route::get('/callback', 'SocialAuthFacebookController@callback');
+################################################# End login facebook ###################################3######
 
-//######################### Relation Route ###################
+################################################# Relation Route ###################################3######
     Route::group(['prefix' => 'relation','namespace'=>'Relation'],function (){
         //  one to one
         Route::get('one-to-one','RelationsController@hasOneRelation')->name('relation.oneToOne');
@@ -83,7 +92,7 @@ Route::group(['prefix' => LaravelLocalization::setLocale(), 'middleware' => [ 'l
         Route::get('hospital/delete/{hospital_id}','RelationsController@hospitalDelete')->name('relation.hospitalDelete');
 
     });
-
+################################################# End Relation Route ###################################3######
 });
 
 

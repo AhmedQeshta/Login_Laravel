@@ -84,7 +84,7 @@ class OfferAjaxController extends Controller
      */
     public function update(Request $request)
     {
-        try {
+
             $offer = Offer::findOrFail($request->id);
             // Validation
             //  use from class offerRequest
@@ -115,12 +115,7 @@ class OfferAjaxController extends Controller
                 ]);
             }
 
-        }catch (\Throwable $th){
-            return response()->json([
-                'status' => false,
-                'message' => 'Sorry  , this Offer not Add successfully , try Again ',
-            ]);
-        }
+
     }
 
 
