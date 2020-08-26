@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Relation;
 use App\Http\Controllers\Controller;
 use App\Model\Doctor;
 use App\Model\Hospital;
+use App\Model\Patient;
 use App\Model\Phone;
 use App\Model\Service;
 use App\User;
@@ -105,7 +106,7 @@ class RelationsController extends Controller
             return  redirect()->route('relation.AllHospital')->with('success','success delete');
     }
 
-    ##################################################
+    ###################### many to many ############################
     public function getDoctorServices(){
         return $doctor = Doctor::with('services')->find(3);
     }
@@ -134,4 +135,11 @@ class RelationsController extends Controller
         return redirect()->route('relation.doctorServicesById',$request->doctor_id);
 
     }
+
+    ########################## Has 0ne through #########################################
+    public function hasOneThroughRelation(){
+        $patient = Patient::findOrFail(1);
+        return $patient->doctor;
+    }
+
 }

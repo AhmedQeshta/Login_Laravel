@@ -11,7 +11,7 @@ class Doctor extends Model
     protected $primaryKey = 'id';
 
     protected $fillable = [
-        'name', 'title','hospital_id'
+        'name', 'title','hospital_id','medical_id'
     ];
     protected $hidden = [
         'created_at','updated_at','pivot'
@@ -27,5 +27,10 @@ class Doctor extends Model
     public function services(){
         return $this->belongsToMany('App\Model\Service','doctor__services' , 'doctor_id' , 'service_id','id','id');
     }
+
+    //   Doctor Connect Medical ,
+    // Doctors ----> Medical <----- Patient
+    // one to one through
+
 //################# End ###################
 }
