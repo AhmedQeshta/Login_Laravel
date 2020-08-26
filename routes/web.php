@@ -13,7 +13,7 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-############# const variable ###############
+############# const variable  ###############
 
     define('PAGINATION_COUNT',3);
     define('ID_COUNT',1);
