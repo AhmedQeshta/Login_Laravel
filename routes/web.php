@@ -13,9 +13,13 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-//  const variable
-define('PAGINATION_COUNT',3);
-define('ID_COUNT',1);
+############# const variable ###############
+
+    define('PAGINATION_COUNT',3);
+    define('ID_COUNT',1);
+
+################ End #######################
+
 
     Route::group(['prefix' => LaravelLocalization::setLocale(), 'middleware' => [ 'localeSessionRedirect', 'localizationRedirect', 'localeViewPath' ]], function() {
     ################################################# Auth page ########################################3######
