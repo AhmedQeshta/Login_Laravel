@@ -47,6 +47,7 @@ class CrudController extends Controller
 //    use offerRequest from request file
     public function store(offerRequest $request)
     {
+
         // Validation
        //  use from class offerRequest
 //        $request->validate($request->rules(),$request->messages());

@@ -57,6 +57,16 @@
 
                                 </div>
 
+                                <div class="form-group">
+                                    <label for="status">Status</label>
+                                    <input type="text" id="input_status_error" required class="form-control" name="status" value="{{ old('status') }}"  >
+
+                                    <span id="status_error" class=" alert-danger" role="alert">
+                                        <strong></strong>
+                                    </span>
+
+                                </div>
+
                                 <div class="form-action">
                                     <a  id="save_offer" class="btn btn-primary">save</a>
                                     <input type="reset" value="cancel" class="btn btn-default">
@@ -78,9 +88,11 @@
             $('#name_ar_error').text('');
             $('#name_en_error').text('');
             $('#price_error').text('');
+            $('#status_error').text('');
             $('#input_name_ar_error').removeClass('is-invalid');
             $('#input_name_en_error').removeClass('is-invalid');
             $('#input_price_error').removeClass('is-invalid');
+            $('#input_status_error').removeClass('is-invalid');
 
 
 

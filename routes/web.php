@@ -53,6 +53,7 @@ use Illuminate\Support\Facades\Route;
             Route::get('edit/{id}', 'OfferAjaxController@edit')->name('ajax-offer.edit');
             Route::put('update', 'OfferAjaxController@update')->name('ajax-offer.update');
             Route::post('destroy', 'OfferAjaxController@destroy')->name('ajax-offer.destroy');
+            Route::get('get-all-inactive-offer', 'OfferAjaxController@getAllInActiveOffer')->name('ajax-offer.getAllInActiveOffer');
         });
     ################################################# End Ajax offers page ###################################3######
 

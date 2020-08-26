@@ -18,6 +18,7 @@ class CreateOffersTable extends Migration
             $table->string('name_ar');
             $table->string('name_en');
             $table->string('price');
+            $table->tinyInteger('status')->default(1);
             $table->string('photo');
             $table->timestamps();
         });

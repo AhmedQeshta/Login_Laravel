@@ -27,6 +27,7 @@ class OfferAjaxController extends Controller
    }
 
     public function store(Request $request){
+
         //store  data , create by ajax
         // Validation
         //  use from class offerRequest
@@ -39,6 +40,7 @@ class OfferAjaxController extends Controller
             $imagePath = parent::uploadImage($request->file('offer_image'),'image/offers');
             $request['photo'] = $imagePath ;
         }
+
        $offers = Offer::create($request->all());
 
         if ($offers){
@@ -156,6 +158,12 @@ class OfferAjaxController extends Controller
 
     }
 
+    public function getAllInActiveOffer(){
+        // where , whereNull(colom) , whereNotNull , whereIn
+//       return $inActiveOffers = Offer::InActiveOffer()->get();
+//       return $inActiveOffers = Offer::NotNull()->get();
+       return $inActiveOffers = Offer::NotNullAndInActive()->get();
+    }
 
 /////////////////////////////// rules--------------------------------------
     private function rules($id= null){
@@ -164,11 +172,13 @@ class OfferAjaxController extends Controller
             $rules['name_ar'] = 'required|min:3|max:50|unique:offers,name_ar,' . $id ;
             $rules['name_en'] = 'required|min:3|max:50|unique:offers,name_en,' . $id ;
             $rules['price'] = 'required|min:1|max:6';
+            $rules['status'] = 'numeric|min:1|max:1';
             $rules['offer_image'] = 'mimes:png,jpg,jpeg' ;
         }else {
             $rules['name_ar'] = 'required|min:3|max:50|unique:offers,name_ar' ;
             $rules['name_en'] = 'required|min:3|max:50|unique:offers,name_en' ;
             $rules['price'] = 'required|min:1|max:6|' ;
+            $rules['status'] = 'numeric|min:0|max:1';
             $rules['offer_image'] = 'required|mimes:png,jpg,jpeg' ;
         }
 
@@ -179,6 +189,8 @@ class OfferAjaxController extends Controller
         $messages = [
             'name_ar.unique' => __('test.offerNameUniq'),
             'name_en.unique' => __('test.offerNameUniq'),
+            'status.min' => 'number must be 0 or 1',
+            'status.max' => 'number must be 0 or 1',
         ];
         return $messages;
     }
