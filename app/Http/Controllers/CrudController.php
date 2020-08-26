@@ -24,8 +24,8 @@ class CrudController extends Controller
      */
     public function index(){
         $offers = Offer::select('id','name_'.LaravelLocalization::getCurrentLocale(). ' as name','price','photo');
-        $offers = $offers->latest()->paginate(2);
-        return view('offers.all',compact('offers'))->with('i', (request()->input('page', 1) - 1) * 2);
+        $offers = $offers->latest()->paginate(PAGINATION_COUNT);
+        return view('offers.all',compact('offers'))->with('i', (request()->input('page', ID_COUNT) - 1) * PAGINATION_COUNT);
     }
 
     /**
@@ -194,9 +194,9 @@ class CrudController extends Controller
     public function getVideo(){
         try {
             $videos = Video::where([]);
-            $videos = $videos->latest()->paginate(3);
+            $videos = $videos->latest()->paginate(PAGINATION_COUNT);
             return view('video',compact('videos'))
-                ->with('i', (request()->input('page', 1) - 1) * 3);
+                ->with('i', (request()->input('page', ID_COUNT) - 1) * PAGINATION_COUNT);
         }catch (\Throwable $th){
             return redirect()->route('offers.index');
         }
