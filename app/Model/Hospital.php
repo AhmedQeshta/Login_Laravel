@@ -11,7 +11,7 @@ class Hospital extends Model
     protected $primaryKey = 'id';
 
     protected $fillable = [
-        'name', 'address',
+        'name', 'address','country_id',
     ];
     protected $hidden = [
         'created_at','updated_at'
@@ -22,5 +22,7 @@ class Hospital extends Model
     public function doctors(){
         return $this->hasMany('App\Model\Doctor','hospital_id' ,'id');
     }
+
+
 //################# End ###################
 }
