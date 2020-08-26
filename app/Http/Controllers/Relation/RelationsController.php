@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Model\Doctor;
 use App\Model\Hospital;
 use App\Model\Phone;
+use App\Model\Service;
 use App\User;
 use Illuminate\Http\Request;
 
@@ -102,5 +103,35 @@ class RelationsController extends Controller
             $hospital->doctors()->delete();
             $hospital->delete();
             return  redirect()->route('relation.AllHospital')->with('success','success delete');
+    }
+
+    ##################################################
+    public function getDoctorServices(){
+        return $doctor = Doctor::with('services')->find(3);
+    }
+    public function getServicesDoctor(){
+        return $services = Service::with(['doctors'=>function ($q){
+            $q->select('doctors.id','name','title');
+        }])->find(2);
+    }
+    public function getDoctorServicesById($doctorId){
+        $doctor = Doctor::findOrFail($doctorId);
+        $services = $doctor->services ; // one doctor services
+
+        $doctors = Doctor::select('id','name')->get();
+        $allServices = Service::select('id','name')->get();
+        return view('hospital.services',compact('services','doctors','allServices'));
+    }
+    public  function saveServicesToDoctor(Request $request){
+        $doctor = Doctor::findOrFail($request->doctor_id);
+        $services = Service::findOrFail($request->services_id);
+
+
+        //$doctor->services()->attach($request->services_id); // many to many insert to dataBase
+        //$doctor->services()->sync($request->services_id); // to update and delete old data and insert new data
+        $doctor->services()->syncWithoutDetaching($request->services_id); // to update and insert new data
+
+        return redirect()->route('relation.doctorServicesById',$request->doctor_id);
+
     }
 }

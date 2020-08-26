@@ -91,6 +91,11 @@ Route::group(['prefix' => LaravelLocalization::setLocale(), 'middleware' => [ 'l
         Route::get('hospital-has_no_doctors','RelationsController@getHospitalHasNoDoctorsRelation')->name('relation.HospitalHasNoDoctors');
         Route::get('hospital/delete/{hospital_id}','RelationsController@hospitalDelete')->name('relation.hospitalDelete');
 
+        //  many to many
+        Route::get('doctors/services','RelationsController@getDoctorServices')->name('relation.doctorServices');
+        Route::get('services/doctor','RelationsController@getServicesDoctor')->name('relation.ServicesDoctor');
+        Route::get('doctors/services/{doctor_id}','RelationsController@getDoctorServicesById')->name('relation.doctorServicesById');
+        Route::post('saveServices-to-doctor','RelationsController@saveServicesToDoctor')->name('relation.saveServicesToDoctor');
     });
 ################################################# End Relation Route ###################################3######
 });

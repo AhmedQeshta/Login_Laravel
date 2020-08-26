@@ -14,13 +14,18 @@ class Doctor extends Model
         'name', 'title','hospital_id'
     ];
     protected $hidden = [
-        'created_at','updated_at'
+        'created_at','updated_at','pivot'
     ];
 
     //################ Relations ################
         // to many to one (doctor <--- hospital)
     public function hospital(){
         return $this->belongsTo('App\Model\Hospital','hospital_id' ,'id');
+    }
+
+        // Services has many doctors ,doctors has many Services   (many to many)
+    public function services(){
+        return $this->belongsToMany('App\Model\Service','doctor__services' , 'doctor_id' , 'service_id','id','id');
     }
 //################# End ###################
 }

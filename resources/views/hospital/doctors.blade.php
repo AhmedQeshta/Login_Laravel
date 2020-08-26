@@ -11,6 +11,7 @@
                         <th scope="col">#</th>
                         <th scope="col">name</th>
                         <th scope="col">Job</th>
+                        <th scope="col">operations</th>
 
                     </tr>
                     </thead>
@@ -21,6 +22,7 @@
                                 <th class="text-center" scope="row">{{ ++$i }}</th>
                                 <td class="text-center">{{$doctor->name}}</td>
                                 <td class="text-center">{{$doctor->title}}</td>
+                                <td class="text-center btn btn-success"><a href="{{route('relation.doctorServices', $doctor->id)}}"> Services </a></td>
                             </tr>
                         @endforeach
                     @else
