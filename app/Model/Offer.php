@@ -34,7 +34,7 @@ class Offer extends Model
     #################### Mutators ###( use in set data )#######################
                 ### set___column name___Attribute (EX. set(NameEn)Attribute -> this handle column {NameEn} form database table )
     public function setNameEnAttribute($value){
-        $this->attributes['name_en'] = strtoupper($value);
+        //        $this->attributes['name_en'] = strtoupper($value);
     }
     #################### End Mutators ##########################
 

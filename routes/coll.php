@@ -15,4 +15,7 @@ use Illuminate\Support\Facades\Route;
 
 Route::group(['prefix' => LaravelLocalization::setLocale(), 'middleware' => [ 'localeSessionRedirect', 'localizationRedirect', 'localeViewPath' ]], function() {
     Route::get('collection','collectTutController@index')->name('collection');
+    Route::get('main-offers-each','collectTutController@complexEach')->name('OffersComplexEach');
+    Route::get('main-offers-filter','collectTutController@complexFilter')->name('OffersComplexFilter');
+    Route::get('main-offers-transform','collectTutController@complexTransform')->name('OfferscomplexTransform');
 });
