@@ -31,6 +31,13 @@ class Offer extends Model
         return $query->whereNotNull('status')->where('status','=',0);
     }
 
+    #################### Mutators ###( use in set data )#######################
+                ### set___column name___Attribute (EX. set(NameEn)Attribute -> this handle column {NameEn} form database table )
+    public function setNameEnAttribute($value){
+        $this->attributes['name_en'] = strtoupper($value);
+    }
+    #################### End Mutators ##########################
+
     #################### (Register it) to use global scope ##############
     /**
      * The "booted" method of the model.
@@ -42,5 +49,6 @@ class Offer extends Model
         parent::boot();
         static::addGlobalScope(new OfferScope);
     }
+    #################### End (Register it) to use global scope ##############
 
 }

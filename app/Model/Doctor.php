@@ -11,11 +11,19 @@ class Doctor extends Model
     protected $primaryKey = 'id';
 
     protected $fillable = [
-        'name', 'title','hospital_id','medical_id'
+        'name', 'title','hospital_id','medical_id','gender',
     ];
     protected $hidden = [
         'created_at','updated_at','pivot'
     ];
+
+    ################### Accessors ###( use in get data )########################
+                ### get___column name___Attribute (EX. get(Title)Attribute -> this handle column {title} form database table )
+    public function getGenderAttribute($val){
+        return $val == 1 ? 'male' : 'female'; # if(1){return 'male';}elseif(gender=2){return 'female';}
+    }
+    ################### End Accessors #########################
+
 
     //################ Relations ################
         // to many to one (doctor <--- hospital)

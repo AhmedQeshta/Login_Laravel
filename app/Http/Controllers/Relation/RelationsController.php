@@ -150,8 +150,12 @@ class RelationsController extends Controller
     public function hospitalIntoCountry($country_id){
         //ثم عرضها يكون في الكنترولر
         return $country = Country::with('hospitals')->findOrFail($country_id);
-
-
     }
+
+    ################################### Accessors and mutators ################################
+    public function getDoctorAccessorsRelation(){
+          return  Doctor::select('id','name','gender')->get();
+    }
+
 
 }

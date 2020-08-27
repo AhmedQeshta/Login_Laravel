@@ -18,7 +18,7 @@ class OfferScope implements Scope{
      */
     public function apply(Builder $builder, Model $model)
     {
-        $builder->whereNotNull('status')->where('status','=',0);
+        $builder->where('status','=',1);
     }
 
 }

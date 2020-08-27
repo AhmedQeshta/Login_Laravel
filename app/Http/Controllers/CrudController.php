@@ -23,9 +23,9 @@ class CrudController extends Controller
      * @return \Illuminate\Http\Response
      */
     public function index(){
-        $offers = Offer::select('id','name_'.LaravelLocalization::getCurrentLocale(). ' as name','price','photo');
-        $offers = $offers->latest()->paginate(PAGINATION_COUNT);
-        return view('offers.all',compact('offers'))->with('i', (request()->input('page', ID_COUNT) - 1) * PAGINATION_COUNT);
+        $offersWithOutAjax = Offer::select('id','name_'.LaravelLocalization::getCurrentLocale(). ' as name','price','photo');
+        $offersWithOutAjax = $offersWithOutAjax->latest()->paginate(PAGINATION_COUNT);
+        return view('offers.all',compact('offersWithOutAjax'))->with('i', (request()->input('page', ID_COUNT) - 1) * PAGINATION_COUNT);
     }
 
     /**
@@ -171,11 +171,13 @@ class CrudController extends Controller
             $rules['name_ar'] = 'required|min:3|max:50|unique:offers,name_ar,' . $id ;
             $rules['name_en'] = 'required|min:3|max:50|unique:offers,name_en,' . $id ;
             $rules['price'] = 'required|min:1|max:6';
+            $rules['status'] = 'numeric|min:1|max:1';
             $rules['offer_image'] = 'mimes:png,jpg,jpeg' ;
         }else {
             $rules['name_ar'] = 'required|min:3|max:50|unique:offers,name_ar' ;
             $rules['name_en'] = 'required|min:3|max:50|unique:offers,name_en' ;
             $rules['price'] = 'required|min:1|max:6|' ;
+            $rules['status'] = 'numeric|min:0|max:1';
             $rules['offer_image'] = 'required|mimes:png,jpg,jpeg' ;
         }
 
@@ -186,6 +188,8 @@ class CrudController extends Controller
         $messages = [
             'name_ar.unique' => __('test.offerNameUniq'),
             'name_en.unique' => __('test.offerNameUniq'),
+            'status.min' => 'number must be 0 or 1',
+            'status.max' => 'number must be 0 or 1',
         ];
         return $messages;
     }

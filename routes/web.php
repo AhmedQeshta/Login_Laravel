@@ -16,25 +16,26 @@ use Illuminate\Support\Facades\Route;
 ############# const variable  ###############
 
     define('PAGINATION_COUNT',3);
-    define('ID_COUNT',1);
+    define('ID_COUNT',1);//to starter id table in offers table
 
 ################ End #######################
 
 
     Route::group(['prefix' => LaravelLocalization::setLocale(), 'middleware' => [ 'localeSessionRedirect', 'localizationRedirect', 'localeViewPath' ]], function() {
-    ################################################# Auth page ########################################3######
+    ################################################# Auth page #####################################################
         Auth::routes(['verify' => true]);
         Route::get('/home', 'HomeController@index')->name('home');
-    ################################################# End welcome page ########################################3######
+    ################################################# End welcome page ###############################################
 
-    #################################################### End Auth ########################################3######
+    #################################################### End Auth ###############################################
         Route::get('/', function () {
             return view('welcome');
         });
-    ################################################# End welcome page ########################################3######
+    ################################################# End welcome page ###############################################
 
-    #################################################### offers page ########################################3######
+    #################################################### offers page ###############################################
         Route::group(['prefix' => 'offers'],function (){
+            ########## use scope (global)  where status = 1 #############
             Route::get('/', 'CrudController@index')->name('offers.index');
             Route::get('create', 'CrudController@create')->name('offers.create');
             Route::post('store', 'CrudController@store')->name('offers.store');
@@ -42,22 +43,24 @@ use Illuminate\Support\Facades\Route;
             Route::put('update/{id}', 'CrudController@update')->name('offers.update');
             Route::get('destroy/{id?}', 'CrudController@destroy')->name('offers.destroy');
         });
-    ################################################# End offers page ########################################3######
+    ################################################# End offers page ###############################################
 
 
-    #################################################### Ajax offers page ####################################3######
+    #################################################### Ajax offers page ###########################################
         Route::group(['prefix' => 'ajax-offer'],function (){
+            ########## use scope (global)  where status = 1 #############
             Route::get('/', 'OfferAjaxController@index')->name('ajax-offer.index');
             Route::get('create', 'OfferAjaxController@create')->name('ajax-offer.create');
             Route::post('store', 'OfferAjaxController@store')->name('ajax-offer.store');
             Route::get('edit/{id}', 'OfferAjaxController@edit')->name('ajax-offer.edit');
             Route::put('update', 'OfferAjaxController@update')->name('ajax-offer.update');
             Route::post('destroy', 'OfferAjaxController@destroy')->name('ajax-offer.destroy');
+            ########## use scope (local,global) #############
             Route::get('get-all-inactive-offer', 'OfferAjaxController@getAllInActiveOffer')->name('ajax-offer.getAllInActiveOffer');
         });
-    ################################################# End Ajax offers page ###################################3######
+    ################################################# End Ajax offers page ##########################################
 
-    ################################################# Gard and multi auth ###################################3######
+    ################################################# Gard and multi auth ##########################################
         //New Middleware(CheckAge (if < 18))
         Route::group(['prefix' => 'adults','namespace'=>'Auth','middleware'=>['CheckAge','auth']],function (){
             Route::get('/','CustomAuthController@adult')->name('adult');
@@ -69,19 +72,19 @@ use Illuminate\Support\Facades\Route;
             Route::get('admin/login','CustomAuthController@adminLogin')->name('auth.admin.login');
             Route::post('admin/login','CustomAuthController@saveAdminLogin')->name('auth.save.admin.login');
         });
-    ################################################# End Gard and multi auth ###################################3######
+    ################################################# End Gard and multi auth ##########################################
 
-    ################################################# event listener ###################################3######
+    ################################################# event listener ##########################################
             Route::get('youtube','CrudController@getVideo')->name('youtube.video');
             Route::get('youtube/{id}','CrudController@getVideoOne')->name('youtube.videoOne')->middleware('auth:admin,web');
-    ################################################# End event listener ###################################3######
+    ################################################# End event listener ##########################################
 
-    ################################################# login facebook ###################################3######
+    ################################################# login facebook ##########################################
         Route::get('/redirect', 'SocialAuthFacebookController@redirect');
         Route::get('/callback', 'SocialAuthFacebookController@callback');
-    ################################################# End login facebook ###################################3######
+    ################################################# End login facebook ##########################################
 
-    ################################################# Relation Route ###################################3######
+    ################################################# Relation Route ##########################################
         Route::group(['prefix' => 'relation','namespace'=>'Relation'],function (){
             //  one to one
             Route::get('one-to-one','RelationsController@hasOneRelation')->name('relation.oneToOne');
@@ -113,8 +116,13 @@ use Illuminate\Support\Facades\Route;
             Route::get('has-many-through','RelationsController@hasManyThroughRelation')->name('relation.hasManyThroughRelation');
             Route::get('hospital-in-country/{country_id}','RelationsController@hospitalIntoCountry')->name('relation.hospitalInCountry');
 
+            ### Accessors and mutators #######
+            Route::get('accessors','RelationsController@getDoctorAccessorsRelation'); // get data
+
         });
-    ################################################# End Relation Route ###################################3######
+    ################################################# End Relation Route ##########################################
+
+
     });
 
 

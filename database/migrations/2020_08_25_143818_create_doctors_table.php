@@ -17,6 +17,7 @@ class CreateDoctorsTable extends Migration
             $table->id();
             $table->string('name');
             $table->string('title');
+            $table->unsignedInteger('gender');//1=> male , 2=> female
             $table->unsignedInteger('hospital_id');
             $table->unsignedInteger('medical_id');
             $table->timestamps();

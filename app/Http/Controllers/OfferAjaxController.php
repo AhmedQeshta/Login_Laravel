@@ -14,10 +14,12 @@ class OfferAjaxController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
+
+
     public function index(){
-        $offers = Offer::select('id','name_'.LaravelLocalization::getCurrentLocale(). ' as name','price','photo');
-        $offers = $offers->latest()->paginate(2);
-        return view('ajax_offers.all',compact('offers'))->with('i', (request()->input('page', 1) - 1) * 2);
+        $offers = Offer::select('id','name_'.LaravelLocalization::getCurrentLocale().' as name','price','photo');
+        $offers = $offers->latest()->paginate(PAGINATION_COUNT);
+        return view('ajax_offers.all',compact('offers'))->with('i', (request()->input('page', ID_COUNT) - 1) * PAGINATION_COUNT);
     }
 
 
@@ -181,13 +183,13 @@ class OfferAjaxController extends Controller
             $rules['name_ar'] = 'required|min:3|max:50|unique:offers,name_ar,' . $id ;
             $rules['name_en'] = 'required|min:3|max:50|unique:offers,name_en,' . $id ;
             $rules['price'] = 'required|min:1|max:6';
-            $rules['status'] = 'numeric|min:1|max:1';
+//            $rules['status'] = 'numeric|min:1|max:1';
             $rules['offer_image'] = 'mimes:png,jpg,jpeg' ;
         }else {
             $rules['name_ar'] = 'required|min:3|max:50|unique:offers,name_ar' ;
             $rules['name_en'] = 'required|min:3|max:50|unique:offers,name_en' ;
             $rules['price'] = 'required|min:1|max:6|' ;
-            $rules['status'] = 'numeric|min:0|max:1';
+//            $rules['status'] = 'numeric|min:0|max:1';
             $rules['offer_image'] = 'required|mimes:png,jpg,jpeg' ;
         }
 
@@ -198,8 +200,8 @@ class OfferAjaxController extends Controller
         $messages = [
             'name_ar.unique' => __('test.offerNameUniq'),
             'name_en.unique' => __('test.offerNameUniq'),
-            'status.min' => 'number must be 0 or 1',
-            'status.max' => 'number must be 0 or 1',
+//            'status.min' => 'number must be 0 or 1',
+//            'status.max' => 'number must be 0 or 1',
         ];
         return $messages;
     }

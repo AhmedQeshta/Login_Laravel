@@ -27,17 +27,17 @@
             </thead>
             <tbody>
 
-            @forelse($offers as $offer)
+            @forelse($offersWithOutAjax as $offerWithOutAjax)
             <tr>
 {{--                <th scope="row">{{$offer->id}}</th>--}}
                 <td>{{ ++$i }}</td>
-                <td>{{$offer->name}}</td>
-                <td>{{$offer->price}} <strong> $ </strong></td>
-                <td><img class="d-flex text-center " src="{{asset($offer->photo)}}" width="100px"  alt="{{$offer->name_ar}}"></td>
+                <td>{{$offerWithOutAjax->name}}</td>
+                <td>{{$offerWithOutAjax->price}} <strong> $ </strong></td>
+                <td><img class="d-flex text-center " src="{{asset($offerWithOutAjax->photo)}}" width="100px"  alt="{{$offerWithOutAjax->name_ar}}"></td>
                 <td>
                     <span class="px-2">
-                    <a href="{{route('offers.edit',$offer->id)}}" class="btn btn-success">{{__('test.message.edit')}}</a>
-                    <a href="{{route('offers.destroy',$offer->id)}}" class="btn btn-danger">{{__('test.message.delete')}}</a>
+                    <a href="{{route('offers.edit',$offerWithOutAjax->id)}}" class="btn btn-success">{{__('test.message.edit')}}</a>
+                    <a href="{{route('offers.destroy',$offerWithOutAjax->id)}}" class="btn btn-danger">{{__('test.message.delete')}}</a>
                     </span>
                 </td>
 
@@ -55,7 +55,7 @@
             </tbody>
         </table>
         <div class="text-center">
-            {{ $offers->links() }}
+            {{ $offersWithOutAjax->links() }}
         </div>
     </div>
 
