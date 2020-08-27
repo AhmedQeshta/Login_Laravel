@@ -22,7 +22,7 @@ class collectTutController extends Controller
 //        return $col->countBy();
 //        return $col->duplicates();
 
-        ######## (each , filter , search  , transform ) #############
+        ########### (each , filter , search  , transform ) #############
 
 
     }
