@@ -2,6 +2,7 @@
 
 namespace App\Model;
 
+use App\Scopes\OfferScope;
 use Illuminate\Database\Eloquent\Model;
 
 
@@ -19,7 +20,7 @@ class Offer extends Model
         'name_ar','name_en', 'price','photo','status'
     ];
 
-    ###################### Scope ####################
+    ###################### Local Scope ####################
     public function scopeInActiveOffer($query){
       return  $query -> where('status','=',0);
     }
@@ -29,4 +30,17 @@ class Offer extends Model
     public function scopeNotNullAndInActive($query){
         return $query->whereNotNull('status')->where('status','=',0);
     }
+
+    #################### (Register it) to use global scope ##############
+    /**
+     * The "booted" method of the model.
+     *
+     * @return void
+     */
+    protected static function boot()
+    {
+        parent::boot();
+        static::addGlobalScope(new OfferScope);
+    }
+
 }

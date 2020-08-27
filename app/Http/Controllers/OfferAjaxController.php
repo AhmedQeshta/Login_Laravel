@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Model\Offer;
+use App\Scopes\OfferScope;
 use Illuminate\Http\Request;
 use Mcamara\LaravelLocalization\Facades\LaravelLocalization;
 use File;
@@ -159,10 +160,18 @@ class OfferAjaxController extends Controller
     }
 
     public function getAllInActiveOffer(){
-        // where , whereNull(colom) , whereNotNull , whereIn
-//       return $inActiveOffers = Offer::InActiveOffer()->get();
-//       return $inActiveOffers = Offer::NotNull()->get();
-       return $inActiveOffers = Offer::NotNullAndInActive()->get();
+        ###### where , whereNull(colom) , whereNotNull , whereIn ######
+
+###################### use by local scope in folder(app\Model\Offer) ################
+    //       return $inActiveOffers = Offer::InActiveOffer()->get();
+    //       return $inActiveOffers = Offer::NotNull()->get();
+    //       return $inActiveOffers = Offer::NotNullAndInActive()->get();
+
+###################### use by global scope in folder(app\Scopes\OfferScope) ################
+        return $inActiveOffers = Offer::get();
+##################################### how to remove global scope ###########################
+//        return $inActiveOffers = Offer::withoutGlobalScope(OfferScope::class)->get();
+
     }
 
 /////////////////////////////// rules--------------------------------------
